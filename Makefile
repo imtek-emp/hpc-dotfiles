@@ -2,6 +2,8 @@ SHELL := /bin/bash
 
 .DEFAULT_GOAL := help
 
+INSTALL_PREFIX ?= "~"
+
 .PHONY: test
 test: shellcheck ## Runs all the tests
 
