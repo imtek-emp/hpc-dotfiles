@@ -19,8 +19,12 @@ test-install: ## Installs default profile (bash, git, configs)
 	@bash ./install.sh -i -x -T
 
 .PHONY: verify
-verify: ## Verifies checksums
+verify: ## Verifies checksums and its signature
 	@bash checksum.sh -v
+
+.PHONY: verify-integrity
+verify-integrity: ## Verifies checksums
+	@bash checksum.sh -v -G
 
 .PHONY: signature
 signature: ## sing
