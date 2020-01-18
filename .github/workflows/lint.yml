@@ -24,9 +24,8 @@ jobs:
         run: make shellcheck
       - name: Test Install script
         run: |
-          ./checksum.sh --verify -G
+          make verify
           # Modify after verification
           sed -i 's/set -o pipefail/set -eo pipefail/g' ./install.sh
-          ./install.sh -i -x --test-mode
+          make test-install
           ./install.sh -i -x
-          ./install.sh -i -n hpc -T

@@ -15,7 +15,7 @@ install: ## Installs default profile (bash, git, configs)
 	@bash ./install.sh -i -x
 
 .PHONY: test-install
-install: ## Installs default profile (bash, git, configs)
+test-install: ## Installs default profile (bash, git, configs)
 	@bash ./install.sh -i -x -T
 
 .PHONY: verify
