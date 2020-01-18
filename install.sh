@@ -242,9 +242,6 @@ function install_config_files()
   # Easy way clould be to use gnu stow.
   # But Its not installed by default.
 
-  # Neofetch
-  __install_config_files "neofetch" ".config/neofetch"
-
   # Starship
   __install_config_files "starship" ".config"
 
