@@ -3,6 +3,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 INSTALL_PREFIX ?= "${HOME}"
+COMMIT_MSG := $(shell cat .upstream)
 
 .PHONY: test
 test: shellcheck test-install-default  test-install-minimal ## Runs all the tests
@@ -36,6 +37,10 @@ verify-integrity: ## Verifies checksums
 .PHONY: signature
 signature: ## sing
 	@bash checksum.sh -c -s -v
+
+.PHONY: commit
+commit: verify ## Verify and commit
+	@git add -A && git commit -m "$(COMMIT_MSG)"
 
 .PHONY: help
 help: ## This help dialog.

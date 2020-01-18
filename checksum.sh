@@ -10,12 +10,8 @@
 
 set -eo pipefail
 readonly SCRIPT=$(basename "$0")
-if [[ -z ${ROOT_DIR} ]]; then
-	readonly BASE_DIR="$(pwd)"
-else
-	readonly BASE_DIR="${ROOT_DIR}"
-fi
-readonly CHECKSUMS_FILE="${BASE_DIR}/SHA512SUMS"
+readonly DIR="$(pwd)"
+readonly CHECKSUMS_FILE="${DIR}/SHA512SUMS"
 readonly YELLOW=$'\e[1;33m'
 readonly GREEN=$'\e[1;32m'
 readonly BLUE=$'\e[1;34m'
@@ -67,21 +63,23 @@ function generate_checksums()
   print_info "Checksum will be saved as, SHA512SUMS"
   print_info "Any previous file by that name will be emptied"
 
-  rm -f "${CHECKSUMS_FILE}"
-  find "${BASE_DIR}" -type f \
-			-not -path "./.git/**" \
+  : > SHA512SUMS
+  find . -type f -not -path "./.git/**" \
       -not -path "./fonts/**" \
+      -not -path "./github/**" \
+      -not -name ".travis.yml" \
 			-not -path "./imtek-*/**" \
+			-not -path "./emp-*/**" \
       -not -path "./vendor/**" \
       -not -path "./.github/**" \
-      -not -name ".travis.yml" \
+      -not -name "azure-pipelines.yml" \
       -not -name "SHA512SUMS" \
       -not -name ".gitignore" \
       -not -name "LICENSE.md" \
       -not -name "README.md" \
       -not -name "SHA512SUMS.asc" \
       "-print0" | xargs "-0" sha512sum \
-        >> "${CHECKSUMS_FILE}"
+        >> SHA512SUMS
   print_success "Generated SHA512 checksums"
 }
 
@@ -112,7 +110,7 @@ function verify_checksums() {
       print_success "Hooray! SHA512 checksums verified"
     else
       print_error "Failed! Some files failed checksum verification!"
-      print_error "Manually run 'sha512sum -c ${CHECKSUMS_FILE} --quiet' to check for errors."
+      print_error "Manually run 'sha512sum -c ${CHECKSUMS_FILE}' to check for errors."
       exit 2
     fi
   else
