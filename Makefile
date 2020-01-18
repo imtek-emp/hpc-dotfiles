@@ -82,3 +82,7 @@ install-tools: ## Installs extra tools used by dotfiles (starship-rs and direnv)
 .PHONY: clean-downloads
 clean-downloads: ## cleanup old downloads
 	@rm -f vendor/*.*
+
+.PHONY: show-install-prefix
+show-install-prefix:
+	@echo "$(INSTALL_PREFIX)"
