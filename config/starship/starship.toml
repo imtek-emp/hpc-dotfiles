@@ -22,7 +22,7 @@ prompt_order = [
 ]
 
 [hostname]
-prefix = "歷 "
+prefix = "歷"
 style = "#FF8800"
 
 # Replace the "❯" symbol in the prompt with "➜"
