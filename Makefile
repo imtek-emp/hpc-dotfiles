@@ -34,8 +34,8 @@ verify: ## Verifies checksums and its signature
 verify-integrity: ## Verifies checksums
 	@bash checksum.sh -v -G
 
-.PHONY: signature
-signature: ## sing
+.PHONY: sign
+sign: ## sign
 	@bash checksum.sh -c -s -v
 
 .PHONY: commit

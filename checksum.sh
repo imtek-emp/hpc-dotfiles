@@ -64,14 +64,15 @@ function generate_checksums()
   print_info "Any previous file by that name will be emptied"
 
   : > SHA512SUMS
-  find . -type f -not -path "./.git/**" \
+  find . -type f \
+			-not -path "./.git/**" \
       -not -path "./fonts/**" \
       -not -path "./github/**" \
-      -not -name ".travis.yml" \
 			-not -path "./imtek-*/**" \
 			-not -path "./emp-*/**" \
       -not -path "./vendor/**" \
       -not -path "./.github/**" \
+      -not -name ".travis.yml" \
       -not -name "azure-pipelines.yml" \
       -not -name "SHA512SUMS" \
       -not -name ".gitignore" \
