@@ -57,9 +57,9 @@ install-tools: ## Installs extra tools used by dotfiles (starship-rs and direnv)
 	@mkdir -p vendor
 	@chmod 700 vendor
 	@echo -e "\033[33m  - download binary\033[0m"
-	@curl -sL https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz --output vendor/starship.tar.gz
+	@curl -sL https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-musl.tar.gz --output vendor/starship.tar.gz
 	@echo -e "\033[33m  - download checksum\033[0m"
-	@curl -sL https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz.sha256 --output vendor/starship.tar.gz.sha256
+	@curl -sL https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-musl.tar.gz.sha256 --output vendor/starship.tar.gz.sha256
 	@echo -e "\033[33m  - verify checksum\033[0m"
 	@echo "$$(cat vendor/starship.tar.gz.sha256) vendor/starship.tar.gz" | sha256sum --quiet -c -
 	@echo -e "\033[33m  - install\033[0m"
