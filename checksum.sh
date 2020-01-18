@@ -66,7 +66,8 @@ function generate_checksums()
   : > SHA512SUMS
   find . -type f -not -path "./.git/**" \
       -not -path "./fonts/**" \
-      -not -path "./github/**" \
+      -not -path "./.github/**" \
+      -not -path "./vendor/**" \
       -not -name ".travis.yml" \
       -not -name "azure-pipelines.yml" \
       -not -name "SHA512SUMS" \
