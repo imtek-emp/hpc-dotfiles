@@ -22,6 +22,3 @@ alias greph='history |grep'
 
 # filter processes
 alias pfilter='ps -faux | grep'
-
-# Firewall
-alias fws='sudo ufw status numbered'

@@ -126,18 +126,3 @@ if [ -f ~/.bash_exports ]; then
   #shellcheck disable=SC1090
   source ~/.bash_exports
 fi
-
-# hooks
-
-# direnv hook
-_direnv_hook() {
-  local previous_exit_status=$?;
-  eval "$(direnv export bash)";
-  return $previous_exit_status;
-};
-if ! [[ "${PROMPT_COMMAND:-}" =~ _direnv_hook ]]; then
-  PROMPT_COMMAND="_direnv_hook${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
-fi
-
-# starship hook
-eval "$(starship init bash)"

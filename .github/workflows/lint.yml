@@ -25,9 +25,7 @@ jobs:
       - name: Test Install script
         run: |
           make verify-integrity
-          make install-tools
-
           # Modify after verification
           sed -i 's/set -o pipefail/set -eo pipefail/g' ./install.sh
-          make test-install
-          ./install.sh -i -x
+          make test-install-default
+          make test-install-minimal

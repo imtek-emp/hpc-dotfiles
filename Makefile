@@ -5,7 +5,7 @@ SHELL := /bin/bash
 INSTALL_PREFIX ?= "${HOME}"
 
 .PHONY: test
-test: shellcheck ## Runs all the tests
+test: shellcheck test-install-default  test-install-minimal ## Runs all the tests
 
 
 .PHONY: shellcheck
@@ -13,12 +13,17 @@ shellcheck: ## Runs the shellcheck tests on the scripts.
 	@bash ./tests/test-shell-scripts.sh
 
 .PHONY: install
-install: ## Installs default profile (bash, git, configs)
+install: ## Installs default profile (bash, gpg, and git configs)
 	@bash ./install.sh -i -x
 
-.PHONY: test-install
-test-install: ## Installs default profile (bash, git, configs)
+.PHONY: test-install-default
+test-install-default: ## Test Installs default profile
 	@bash ./install.sh -i -x -T
+
+.PHONY: test-install-minimal
+test-install-minimal: ## Tets Installs minimal profile
+	@bash ./install.sh -i -T -c -n minimal
+
 
 .PHONY: verify
 verify: ## Verifies checksums and its signature
