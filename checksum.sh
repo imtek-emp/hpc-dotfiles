@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#  Copyright (c) 2018-2019. Prasad Tengse
+#  Copyright (c) 2018-2020. Prasad Tengse
 #
 
 # This is a bash script to Generate checksums and sign them

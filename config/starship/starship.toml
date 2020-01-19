@@ -25,6 +25,9 @@ prompt_order = [
 prefix = "歷"
 style = "#FF8800"
 
+[directory]
+style = "bold green"
+
 # Replace the "❯" symbol in the prompt with "➜"
 [character]      # The name of the module we are configuring is "character"
 symbol = "➜ "    # The "symbol" segment is being set to "➜"
@@ -32,14 +35,7 @@ symbol = "➜ "    # The "symbol" segment is being set to "➜"
 # The cLOUD! onward and upward!
 # --------------------
 [aws]
-symbol = " "
-
-# Laptoppy
-# --------------------
-[battery]
-full_symbol = ""
-charging_symbol = ""
-discharging_symbol = ""
+symbol = "  "
 
 # commad duration
 [cmd_duration]
@@ -50,31 +46,31 @@ min_time = 5000
 # Enable Git commit
 [git_commit]
 disabled = false
-style = "yellow"
+style = "#FFBB00"
 prefix = " "
 suffix = " "
 commit_hash_length = 7
 
 [git_branch]
 symbol = " "
-style = "bold green"
+style = "#FF8800"
 truncation_length = 8
 
 
 # Kubernetes
 # --------------------
 [kubernetes]
-symbol = " "
+symbol = "ﴱ "
 disabled = false
-style = "bold #326CE5"
+style = "#4980f4"
 
 [golang]
 symbol = " "
-style = "bold ##00ADD8"
+style = "#00ADD8"
 
 [package]
 symbol = " "
-style = "bold green"
+style = "green"
 
 [python]
 symbol = " "
