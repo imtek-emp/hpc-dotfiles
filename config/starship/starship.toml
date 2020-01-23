@@ -31,6 +31,7 @@ style = "bold green"
 # Replace the "❯" symbol in the prompt with "➜"
 [character]      # The name of the module we are configuring is "character"
 symbol = "➜ "    # The "symbol" segment is being set to "➜"
+#symbol = " "
 
 # The cLOUD! onward and upward!
 # --------------------
@@ -56,6 +57,31 @@ symbol = " "
 style = "#FF8800"
 truncation_length = 8
 
+[git_status]
+
+[git_status.staged]
+# value = ""
+style = "bold #A6CE39"
+
+[git_status.added]
+value = ""
+style = "bold green"
+
+[git_status.untracked]
+# value = ""
+style = "bold cyan"
+
+[git_status.deleted]
+# value = ""
+style = "bold red"
+
+[git_status.modified]
+# value = ""
+style = "bold #FFE01B"
+
+[git_status.stashed]
+# value = ""
+style = "bold gray"
 
 # Kubernetes
 # --------------------
@@ -81,6 +107,7 @@ symbol = " "
 style = "#DEA584"
 
 [terraform]
+symbol = " "
 style = "#623CE4"
 
 # Disable not needed features

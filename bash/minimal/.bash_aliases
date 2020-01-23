@@ -4,10 +4,6 @@
 # for examples
 # collection of aliases
 
-# Colorful grep cmds
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 
 #clear time saver
 alias c=clear
