@@ -40,7 +40,7 @@ sign: ## sign
 
 .PHONY: commit
 commit: verify ## Verify and commit
-	@git add -A && git commit -m "sync with $(COMMIT_MSG)"
+	@git add -A && git commit -m "$(COMMIT_MSG)"
 
 .PHONY: help
 help: ## This help dialog.
