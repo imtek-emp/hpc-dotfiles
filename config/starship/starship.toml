@@ -24,6 +24,7 @@ prompt_order = [
 [hostname]
 prefix = "歷"
 style = "#FF8800"
+ssh_only = false
 
 [directory]
 style = "bold green"

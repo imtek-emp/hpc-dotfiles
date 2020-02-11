@@ -1,0 +1,30 @@
+#!/bin/bash
+connection_count="$(pgrep -a -u "$USER" [X]vnc | awk '{print $3}' | tr -d : | wc -l)"
+
+if [[ $connection_count -gt 0 ]]; then
+  echo "‣ Killing ${connection_count} VNC server processes"
+  while read -r line; do
+    read -p "Do you want to stop vncserver :${line} (y/N) " yesno
+    ans=$(echo "${yesno}" | tr "A-Z" "a-z")
+    if [ "${ans}" = "y" ] 2>/dev/null; then
+        ${TURBOVNC_DIR}/bin/vncserver -kill :${line}
+    fi
+  done < <(pgrep -a -u "$USER" [X]vnc | awk '{print $3}' | tr -d : )
+else
+  echo "‣ No VNC servers were detected!"
+fi
+
+connection_pid_count="$(pgrep -a -u "$USER" [X]vnc | awk '{print $1}' | wc -l)"
+
+if [[ $connection_count -gt 0 ]]; then
+  echo "‣ Killing ${connection_count} VNC server via PIDs"
+  while read -r line; do
+    read -p "‣ Kill via PID - ${line}: (y/N) " yesno
+    ans=$(echo "${yesno}" | tr "A-Z" "a-z")
+    if [ "${ans}" = "y" ] 2>/dev/null; then
+      kill -9 "${line}"
+    fi
+  done < <(pgrep -a -u "$USER" [X]vnc | awk '{print $1}')
+else
+  echo "‣ No Orphaned servers were detected!"
+fi

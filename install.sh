@@ -20,7 +20,6 @@ readonly GREEN=$'\e[32m'
 readonly RED=$'\e[31m'
 readonly BLUE=$'\e[34m'
 readonly NC=$'\e[0m'
-readonly VERSION="3.2.1 Beta"
 readonly CURDIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 readonly spacing_string="%+11s"
 readonly LOGO="   [0;1;31;91m_[0;1;33;93m__[0m       [0;1;35;95m_[0;1;31;91m_[0m  [0;1;33;93m_[0;1;32;92m__[0;1;36;96m__[0m [0;1;34;94m_[0;1;35;95m_[0m
@@ -39,6 +38,9 @@ Usage: ${GREEN}${SCRIPT} ${BLUE}  [options]${NC}
 [-i --install]         [Install dotfiles]
 [-c --no-config]       [Skip Configs in config]
 [-C --only-config]     [Only install config files]
+[-b --skip-bin]        [Skip installing bins]
+[-B --only-bin]        [Only install bins]
+[-f --no-fonts]        [Skip Installing fonts]
 [-x --default-name]    [Fallback to default config name(hpc)]
 [-m --minimal]         [Only install bash and starship config]
 [-n --name]            [Name of the config]
@@ -89,13 +91,6 @@ function print_notice()
 {
   printf "%s✦ %s %s\n" "${BLUE}" "$@" "${NC}"
 }
-
-function display_version()
-{
-  # shellcheck disable=SC2059
-  printf "${spacing_string} ${YELLOW} ${SCRIPT} ${NC}\n${spacing_string} ${YELLOW} ${VERSION} ${NC}\n" "Executable:" "Version:";
-}
-
 
 function __link_files()
 {
@@ -248,6 +243,30 @@ function install_config_files()
   # Direnv
   __install_config_files "direnv" ".config/direnv"
 
+	# VNC
+	__install_config_files "vnc" ".vnc"
+
+}
+
+
+function install_bin_shims()
+{
+	# bin shims
+	__link_files "bin" "bin"
+}
+
+function install_fonts()
+{
+  print_info "Installing fonts..."
+  if mkdir -p "$INSTALL_PREFIX"/.local/share; then
+	  if ln -snf "$CURDIR"/fonts "$INSTALL_PREFIX"/.local/share/fonts; then
+      print_success "Fonts installed successfully!"
+    else
+      print_error "Failed to link fonts to .local/share/fonts"
+    fi
+  else
+    print_error "Failed to create fonts directory. Fonts will not be linked!"
+  fi
 }
 
 
@@ -276,12 +295,15 @@ function main()
                             ;;
       -m | --minimal)       minimal_install="true";
                             ;;
-      -v | --version)       display_version;
-                            exit $?;
+      -f | --no-fonts)      skip_fonts="true";
                             ;;
       -C | --only-config)   only_config="true";
                             ;;
       -c | --no-config)     skip_config="true";
+                            ;;
+      -B | --only-bin)      only_bin="true";
+                            ;;
+      -b | --skip_bin)      skip_bin="true";
                             ;;
       -T | --test-mode)     INSTALL_PREFIX="${HOME}/Junk";
                             print_warning "Test mode is active!";
@@ -297,11 +319,18 @@ function main()
   done
 
 
+
   if [[  $action_install == "true" ]]; then
 
     if [[ $use_default_name == "true" ]]; then
       config_name="hpc";
       print_info "Using default config name";
+    fi
+
+		# Check if config name is empty
+    if [[ $config_name == "" ]]; then
+      print_error "No config name specified"
+      exit 10
     fi
 
     if [[ $only_config == "true" ]]; then
@@ -314,10 +343,11 @@ function main()
       exit $?
     fi
 
-    # Check if config name is empty
-    if [[ $config_name == "" ]]; then
-      print_error "No config name specified"
-      exit 10
+		# bin
+		if [[ $only_bin == "true" ]]; then
+      print_info "Installing scripts to ${INSTALL_PREFIX}/bin"
+      install_bin_shims
+			exit $?
     fi
 
     # Minimal checks
@@ -334,6 +364,21 @@ function main()
       else
         print_info "Installing config files..."
         install_config_files
+      fi
+
+			# bin
+			if [[ $skip_bin == "true" ]]; then
+        print_notice "Not installing scipts from bin"
+      else
+        print_info "Installing scripts to ${INSTALL_PREFIX}/bin"
+        install_bin_shims
+      fi
+
+      # check fonts
+      if [[ $skip_fonts == "true" ]]; then
+        print_notice "Skipping fonts installation"
+      else
+        install_fonts;
       fi
 
     fi # end of minimal if

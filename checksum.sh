@@ -12,10 +12,10 @@ set -eo pipefail
 readonly SCRIPT=$(basename "$0")
 readonly DIR="$(pwd)"
 readonly CHECKSUMS_FILE="${DIR}/SHA512SUMS"
-readonly YELLOW=$'\e[1;33m'
-readonly GREEN=$'\e[1;32m'
-readonly BLUE=$'\e[1;34m'
-readonly RED=$'\e[1;31m'
+readonly YELLOW=$'\e[33m'
+readonly GREEN=$'\e[32m'
+readonly BLUE=$'\e[34m'
+readonly RED=$'\e[31m'
 readonly NC=$'\e[0m'
 
 function display_usage()
@@ -39,7 +39,7 @@ EOF
 
 function print_info()
 {
-  printf "✦ %s \n" "$@"
+  printf "‣ %s \n" "$@"
 }
 
 function print_success()
@@ -107,7 +107,9 @@ function sign_checksum()
 function verify_checksums() {
   print_info "Verifying SHA512SUMS"
   if [[ -f ${CHECKSUMS_FILE} ]]; then
-    if sha512sum -c "${CHECKSUMS_FILE}" --strict --status; then
+		printf "%s" "${YELLOW}"
+    if sha512sum -c "${CHECKSUMS_FILE}" --strict --quiet; then
+			printf "%s" "${NC}"
       print_success "Hooray! SHA512 checksums verified"
     else
       print_error "Failed! Some files failed checksum verification!"
@@ -137,16 +139,15 @@ function verify_gpg_signature()
   fi
 
   # Check for signature files
-  print_info "Verifying GPG signature of checksums"
+  print_info "Verifying digital signature of checksums"
   print_info "Signature File : ${checksum_sig_file}"
   print_info "Data File      : ${CHECKSUMS_FILE}"
   # Checks for commands
   if command -v gpg > /dev/null; then
     if gpg --verify "${checksum_sig_file}" "${CHECKSUMS_FILE}" 2>/dev/null; then
-      print_success "Hooray! GPG signature verified"
+      print_success "Hooray! digintal signature verified"
     else
       print_error "Oh No! Signature checks failed!"
-      print_error "Check signature manually via gpg --verify ${checksum_sig_file}"
       exit 50;
     fi
   elif command -v gpgv > /dev/null; then
@@ -154,7 +155,6 @@ function verify_gpg_signature()
       print_success "Signature verified"
     else
       print_error "Signature checks failed!!"
-      print_error "Check signature manually via 'gpg --verify ${checksum_sig_file}'"
       exit 50;
     fi
   else
@@ -201,7 +201,7 @@ function main()
   if [[ $bool_verify_checksum == "true" ]]; then
     verify_checksums
     if [[ $bool_skip_gpg_verify == "true" ]]; then
-      print_warning "Skipping GPG verification of checksums"
+      print_warning "Skipping signature verification of checksums"
     else
       verify_gpg_signature
     fi

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+XDG_SESSION_TYPE=x11;  export XDG_SESSION_TYPE
+
+if [ "$TVNC_VGL" = "1" ]; then
+  if [ -z "$SSH_AGENT_PID" -a -x /usr/bin/ssh-agent ]; then
+    TVNC_SSHAGENT=/usr/bin/ssh-agent
+  fi
+  if [ -z "$TVNC_VGLRUN" ]; then
+    TVNC_VGLRUN="vglrun +wm"
+  fi
+fi
+
+# XRDB stuff
+if [ -f $HOME/.Xresources ]; then xrdb $HOME/.Xresources; fi
+
+# Dont add & at the end we will use autokill with vncserver
+eval exec "$TVNC_SSHAGENT" "$TVNC_VGLRUN" startxfce4
